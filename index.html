@@ -1,0 +1,1056 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Craft GX - Développeur Web</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      :root {
+        --blue-dark: #020b22;
+        --blue-main: #0f1e4b;
+        --blue-light: #3b5fff;
+        --blue-soft: #eef3ff;
+        --text-main: #ffffff;
+        --text-muted: #c4c8d8;
+        --bg-main: #050b1c;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family:
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+        background: radial-gradient(circle at top, #1a2a6c, #050b1c);
+        color: var(--text-main);
+        overflow-x: hidden;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .page {
+        max-width: 1100px;
+        margin: 20px auto 40px;
+        background: var(--bg-main);
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4);
+        animation: pageFade 0.8s ease-out;
+      }
+
+      @keyframes pageFade {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* NAVBAR */
+      .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px 30px;
+        font-size: 13px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        background: #020616;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        position: sticky;
+        top: 0;
+        z-index: 10;
+      }
+
+      .nav-group {
+        display: flex;
+        gap: 22px;
+        color: var(--text-muted);
+      }
+
+      .nav-link {
+        position: relative;
+        cursor: pointer;
+        transition: color 0.25s ease;
+      }
+
+      .nav-link::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: -6px;
+        height: 2px;
+        width: 0;
+        background: linear-gradient(90deg, #3b5fff, #00d4ff);
+        transition: width 0.25s ease;
+      }
+
+      .nav-link:hover {
+        color: var(--text-main);
+      }
+
+      .nav-link:hover::after,
+      .nav-link.active::after {
+        width: 100%;
+      }
+
+      .brand {
+        font-weight: 700;
+        letter-spacing: 0.24em;
+      }
+
+      /* HERO */
+      .hero {
+        position: relative;
+        height: 360px;
+        background:
+          linear-gradient(to bottom, rgba(0, 0, 40, 0.4), rgba(0, 0, 0, 0.95)),
+          url("https://images.pexels.com/photos/1181675/pexels-photo-1181675.jpeg?auto=compress&cs=tinysrgb&w=1600")
+            center/cover no-repeat;
+        padding: 30px 40px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        overflow: hidden;
+      }
+
+      .hero::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle at top, rgba(59, 95, 255, 0.3), transparent);
+        opacity: 0.5;
+        pointer-events: none;
+        animation: heroGlow 8s ease-in-out infinite;
+      }
+
+      @keyframes heroGlow {
+        0% {
+          transform: translateY(0);
+          opacity: 0.4;
+        }
+        50% {
+          transform: translateY(-20px);
+          opacity: 0.7;
+        }
+        100% {
+          transform: translateY(0);
+          opacity: 0.4;
+        }
+      }
+
+      .hero-intro {
+        max-width: 520px;
+        margin-bottom: 30px;
+        position: relative;
+        z-index: 1;
+        animation: slideInLeft 0.7s ease-out;
+      }
+
+      .hero-hello {
+        font-size: 20px;
+        margin-bottom: 10px;
+        letter-spacing: 0.08em;
+      }
+
+      .hero-hello span {
+        opacity: 0.7;
+      }
+
+      .hero-name {
+        font-size: 46px;
+        font-weight: 800;
+        line-height: 1.05;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        margin-bottom: 14px;
+      }
+
+      .hero-role {
+        font-size: 13px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+      }
+
+      .hero-bottom {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
+        z-index: 1;
+      }
+
+      .hero-btn {
+        border-radius: 40px;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        padding: 10px 22px;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        font-size: 11px;
+        cursor: pointer;
+        background: rgba(0, 0, 0, 0.45);
+        backdrop-filter: blur(8px);
+        color: var(--text-main);
+        transition:
+          transform 0.25s ease,
+          box-shadow 0.25s ease,
+          background 0.25s ease;
+      }
+
+      .hero-btn:hover {
+        transform: translateY(-2px) scale(1.05);
+        box-shadow: 0 14px 30px rgba(0, 0, 0, 0.6);
+        background: rgba(59, 95, 255, 0.9);
+      }
+
+      .hero-badge {
+        height: 90px;
+        width: 90px;
+        border-radius: 50%;
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.16em;
+        text-align: center;
+        padding: 10px;
+        animation: badgeBreath 6s ease-in-out infinite;
+      }
+
+      @keyframes badgeBreath {
+        0% {
+          transform: scale(1) rotate(-2deg);
+        }
+        50% {
+          transform: scale(1.06) rotate(2deg);
+        }
+        100% {
+          transform: scale(1) rotate(-2deg);
+        }
+      }
+
+      /* SECTIONS */
+      section {
+        padding: 32px 40px;
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
+        scroll-margin-top: 80px;
+        opacity: 0;
+        transform: translateY(40px);
+        transition:
+          opacity 0.7s ease,
+          transform 0.7s ease;
+      }
+
+      section.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        margin-bottom: 22px;
+      }
+
+      .section-title {
+        font-size: 22px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+
+      .section-tag {
+        font-size: 12px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+      }
+
+      /* PROJETS */
+      .works-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .work-card {
+        position: relative;
+        height: 150px;
+        border-radius: 12px;
+        overflow: hidden;
+        background:
+          linear-gradient(to top, rgba(0, 0, 0, 0.75), rgba(0, 0, 60, 0.1)),
+          url("https://images.pexels.com/photos/1181671/pexels-photo-1181671.jpeg?auto=compress&cs=tinysrgb&w=800")
+            center/cover no-repeat;
+        cursor: pointer;
+        transition:
+          transform 0.25s ease,
+          box-shadow 0.25s ease,
+          filter 0.25s ease;
+      }
+
+      .work-card:nth-child(2) {
+        background-image:
+          linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 60, 0.1)),
+          url("https://images.pexels.com/photos/1181670/pexels-photo-1181670.jpeg?auto=compress&cs=tinysrgb&w=800");
+      }
+
+      .work-card:nth-child(3) {
+        background-image:
+          linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 60, 0.1)),
+          url("https://images.pexels.com/photos/3861964/pexels-photo-3861964.jpeg?auto=compress&cs=tinysrgb&w=800");
+      }
+
+      .work-card:nth-child(4) {
+        background-image:
+          linear-gradient(to top, rgba(0, 0, 0, 0.85), rgba(0, 0, 60, 0.2)),
+          url("https://images.pexels.com/photos/3861966/pexels-photo-3861966.jpeg?auto=compress&cs=tinysrgb&w=800");
+      }
+
+      .work-card:hover {
+        transform: translateY(-8px) scale(1.03);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+        filter: brightness(1.05);
+      }
+
+      .work-overlay {
+        position: absolute;
+        inset: 0;
+        padding: 12px 14px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        font-size: 12px;
+      }
+
+      .work-title {
+        text-transform: uppercase;
+        letter-spacing: 0.16em;
+        font-size: 11px;
+        opacity: 0.9;
+      }
+
+      .work-meta {
+        font-size: 10px;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+      }
+
+      /* ABOUT */
+      .about-name {
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 6px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .about-text {
+        font-size: 13px;
+        line-height: 1.7;
+        color: var(--text-muted);
+        margin-bottom: 18px;
+        max-width: 720px;
+      }
+
+      .milestones {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .milestone {
+        flex: 1 1 150px;
+        background: rgba(12, 26, 72, 0.85);
+        border-radius: 12px;
+        padding: 10px 12px;
+        font-size: 11px;
+        transition:
+          transform 0.25s ease,
+          box-shadow 0.25s ease;
+      }
+
+      .milestone:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.6);
+      }
+
+      .milestone-number {
+        font-size: 16px;
+        font-weight: 700;
+        margin-bottom: 4px;
+        color: var(--blue-soft);
+      }
+
+      .milestone-label {
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        color: var(--text-muted);
+        font-size: 9px;
+      }
+
+      /* COMPÉTENCES */
+      .skills-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+        margin-top: 22px;
+      }
+
+      .skill-card {
+        background: rgba(8, 18, 60, 0.9);
+        border-radius: 12px;
+        padding: 10px 12px;
+        font-size: 11px;
+        transition:
+          transform 0.25s ease,
+          box-shadow 0.25s ease;
+      }
+
+      .skill-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 16px 32px rgba(0, 0, 0, 0.6);
+      }
+
+      .skill-title {
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        margin-bottom: 6px;
+        color: var(--blue-soft);
+        font-size: 10px;
+      }
+
+      .skill-list {
+        color: var(--text-muted);
+        line-height: 1.6;
+      }
+
+      /* APPS ANDROID */
+      .video-player {
+        border-radius: 14px;
+        overflow: hidden;
+        background: #02061a;
+        position: relative;
+        margin-top: 10px;
+      }
+
+      .video-frame {
+        height: 190px;
+        background:
+          linear-gradient(135deg, rgba(59, 95, 255, 0.12), rgba(0, 0, 0, 0.8)),
+          url("https://images.pexels.com/photos/1181243/pexels-photo-1181243.jpeg?auto=compress&cs=tinysrgb&w=1600")
+            center/cover no-repeat;
+        position: relative;
+        filter: saturate(1.2);
+        transition: transform 0.35s ease;
+      }
+
+      .video-overlay {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle at center, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.8));
+      }
+
+      .video-controls {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 160px;
+        pointer-events: none;
+      }
+
+      .video-arrow {
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        background: rgba(0, 0, 0, 0.7);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #fff;
+        font-size: 14px;
+        pointer-events: auto;
+        cursor: pointer;
+        transition:
+          transform 0.25s ease,
+          box-shadow 0.25s ease,
+          background 0.25s ease;
+      }
+
+      .video-arrow:hover {
+        transform: scale(1.15);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.6);
+        background: rgba(59, 95, 255, 0.9);
+      }
+
+      .video-meta {
+        padding: 12px 16px 14px;
+        font-size: 11px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: rgba(1, 6, 20, 0.9);
+      }
+
+      .video-title {
+        text-transform: uppercase;
+        letter-spacing: 0.16em;
+        margin-bottom: 2px;
+      }
+
+      .video-caption {
+        color: var(--text-muted);
+        font-size: 10px;
+      }
+
+      /* CONTACT / TARIFS */
+      .subscribe {
+        display: grid;
+        grid-template-columns: 1.4fr 1.1fr;
+        gap: 18px;
+        align-items: flex-start;
+      }
+
+      .subscribe-left-title {
+        text-transform: uppercase;
+        letter-spacing: 0.16em;
+        font-size: 12px;
+        margin-bottom: 6px;
+      }
+
+      .subscribe-left-text {
+        color: var(--text-muted);
+        font-size: 13px;
+        line-height: 1.6;
+        margin-bottom: 14px;
+      }
+
+      .price-card {
+        background: rgba(8, 18, 60, 0.9);
+        border-radius: 14px;
+        padding: 14px 16px;
+        font-size: 13px;
+        transition:
+          transform 0.25s ease,
+          box-shadow 0.25s ease;
+      }
+
+      .price-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 18px 32px rgba(0, 0, 0, 0.7);
+      }
+
+      .price-amount {
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 4px;
+      }
+
+      .price-amount span {
+        font-size: 13px;
+        color: var(--text-muted);
+        font-weight: 400;
+      }
+
+      .price-note {
+        font-size: 11px;
+        color: var(--text-muted);
+        margin-top: 6px;
+      }
+
+      .subscribe-form {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .subscribe-input {
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        background: rgba(1, 7, 25, 0.95);
+        padding: 8px 14px;
+        color: #fff;
+        font-size: 11px;
+        outline: none;
+        transition:
+          box-shadow 0.2s ease,
+          border-color 0.2s ease,
+          transform 0.2s ease;
+      }
+
+      .subscribe-input:focus {
+        border-color: var(--blue-light);
+        box-shadow: 0 0 0 1px var(--blue-light);
+        transform: translateY(-2px);
+      }
+
+      .subscribe-input::placeholder {
+        color: #707793;
+      }
+
+      .subscribe-btn {
+        border-radius: 999px;
+        border: none;
+        padding: 8px 14px;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.16em;
+        cursor: pointer;
+        background: linear-gradient(135deg, #3b5fff, #00d4ff);
+        color: #020616;
+        transition:
+          transform 0.25s ease,
+          box-shadow 0.25s ease,
+          filter 0.25s ease;
+      }
+
+      .subscribe-btn:hover {
+        transform: translateY(-2px) scale(1.05);
+        box-shadow: 0 16px 32px rgba(0, 0, 0, 0.7);
+        filter: brightness(1.05);
+      }
+
+      .contact-details {
+        font-size: 12px;
+        color: var(--text-muted);
+        line-height: 1.8;
+        margin-top: 10px;
+      }
+
+      /* FOOTER */
+      .footer {
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.16em;
+        padding: 14px 40px 18px;
+        color: #7d849b;
+        display: flex;
+        justify-content: space-between;
+      }
+
+      /* ANIM SLIDE LEFT/RIGHT POUR SECTIONS */
+      @keyframes slideInLeft {
+        from {
+          opacity: 0;
+          transform: translateX(-60px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      @keyframes slideInRight {
+        from {
+          opacity: 0;
+          transform: translateX(60px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      /* RESPONSIVE */
+      @media (max-width: 800px) {
+        .hero {
+          padding: 24px 20px;
+          height: 320px;
+        }
+
+        section {
+          padding: 26px 20px;
+        }
+
+        .works-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .skills-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .subscribe {
+          grid-template-columns: 1fr;
+        }
+
+        .footer {
+          padding-inline: 20px;
+          flex-direction: column;
+          gap: 6px;
+          align-items: flex-start;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .hero-name {
+          font-size: 34px;
+        }
+        .works-grid {
+          grid-template-columns: 1fr;
+        }
+        .skills-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <div class="topbar">
+        <div class="nav-group">
+          <span class="nav-link active" data-target="about">À propos</span>
+          <span class="nav-link" data-target="works">Projets</span>
+        </div>
+        <div class="brand">CRAFT GX</div>
+        <div class="nav-group">
+          <span class="nav-link" data-target="skills">Stack</span>
+          <span class="nav-link" data-target="contact">Contact</span>
+        </div>
+      </div>
+
+      <header class="hero" id="hero">
+        <div class="hero-intro">
+          <div class="hero-hello">— <span>Bonjour, je suis</span></div>
+          <div class="hero-name">Craft GX.</div>
+          <div class="hero-role">
+            Développeur web autodidacte spécialisé JavaScript depuis 2020.
+          </div>
+        </div>
+        <div class="hero-bottom">
+          <button class="hero-btn" id="contactButton">Discutons de votre projet</button>
+          <div class="hero-badge">Création de sites et apps modernes</div>
+        </div>
+      </header>
+
+      <section id="works">
+        <div class="section-header">
+          <div class="section-title">Mes projets</div>
+          <div class="section-tag">Android & Web</div>
+        </div>
+        <div class="works-grid">
+          <div class="work-card" data-title="App Android #1">
+            <div class="work-overlay">
+              <div class="work-title">Android app 01</div>
+              <div class="work-meta">Mobile • 2025</div>
+            </div>
+          </div>
+          <div class="work-card" data-title="App Android #2">
+            <div class="work-overlay">
+              <div class="work-title">Android app 02</div>
+              <div class="work-meta">React Native • 2025</div>
+            </div>
+          </div>
+          <div class="work-card" data-title="App Android #3">
+            <div class="work-overlay">
+              <div class="work-title">Android app 03</div>
+              <div class="work-meta">Next.js API • 2025</div>
+            </div>
+          </div>
+          <div class="work-card" data-title="App Android #4 & #5">
+            <div class="work-overlay">
+              <div class="work-title">Android apps 04–05</div>
+              <div class="work-meta">5 apps Android en 2025</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="about">
+        <div class="section-header">
+          <div class="section-title">À propos</div>
+          <div class="section-tag">Depuis 2020</div>
+        </div>
+        <div class="about-name">Craft GX</div>
+        <p class="about-text">
+          Je suis un développeur web autodidacte, passionné par JavaScript et les technologies
+          modernes. Depuis 2020, j’apprends en continu et je conçois des interfaces propres, rapides
+          et orientées expérience utilisateur. En 2025, j’ai réalisé 5 applications Android et
+          plusieurs projets web, en m’appuyant sur un stack moderne et robuste.
+        </p>
+        <div class="milestones">
+          <div class="milestone">
+            <div class="milestone-number">2020</div>
+            <div class="milestone-label">Début en développement web</div>
+          </div>
+          <div class="milestone">
+            <div class="milestone-number">5</div>
+            <div class="milestone-label">Apps Android réalisées en 2025</div>
+          </div>
+          <div class="milestone">
+            <div class="milestone-number">JS</div>
+            <div class="milestone-label">Spécialisation JavaScript</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="skills">
+        <div class="section-header">
+          <div class="section-title">Compétences</div>
+          <div class="section-tag">Tech stack</div>
+        </div>
+        <div class="skills-grid">
+          <div class="skill-card">
+            <div class="skill-title">Bases solides</div>
+            <div class="skill-list">
+              Java (bases) <br />
+              Python (bases) <br />
+              PHP (bases) <br />
+              MySQL, MongoDB (bases)
+            </div>
+          </div>
+          <div class="skill-card">
+            <div class="skill-title">Spécialisation JS</div>
+            <div class="skill-list">
+              JavaScript moderne (ES6+) <br />
+              Architecture front & API <br />
+              Gestion d’état, performance, UX
+            </div>
+          </div>
+          <div class="skill-card">
+            <div class="skill-title">Frameworks & outils</div>
+            <div class="skill-list">
+              Sass, Tailwind CSS, Bootstrap <br />
+              React, React Native, Next.js <br />
+              MongoDB, intégration API REST
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="apps">
+        <div class="section-header">
+          <div class="section-title">Apps android</div>
+          <div class="section-tag">5 projets en 2025</div>
+        </div>
+        <div class="video-player">
+          <div class="video-frame" id="videoFrame">
+            <div class="video-overlay"></div>
+            <div class="video-controls">
+              <div class="video-arrow" id="prevVideo">‹</div>
+              <div class="video-arrow" id="nextVideo">›</div>
+            </div>
+          </div>
+          <div class="video-meta">
+            <div>
+              <div class="video-title" id="videoTitle">App Android #1</div>
+              <div class="video-caption" id="videoCaption">
+                Application mobile réalisée avec React Native et une API Node.
+              </div>
+            </div>
+            <div class="video-caption" id="videoDuration">Projet 1 / 5</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact" class="subscribe">
+        <div>
+          <div class="subscribe-left-title">Disponible pour vos projets web</div>
+          <p class="subscribe-left-text">
+            Besoin d’un site vitrine, d’un tableau de bord ou d’une application web/mobile sur
+            mesure&nbsp;? Je conçois des interfaces modernes avec un code propre, en JavaScript,
+            React, Next.js et MongoDB.
+          </p>
+          <div class="price-card">
+            <div class="price-amount">300 € <span>site web de base</span></div>
+            <p>
+              • Site vitrine simple (sans gestion de base de données) <br />
+              • Design moderne et responsive <br />
+              • Livraison clé en main, contenu modifiable
+            </p>
+            <p class="price-note">
+              Paiement en cash après livraison. Pour les projets plus avancés (back‑office, base de
+              données, API…), un devis personnalisé est proposé.
+            </p>
+          </div>
+        </div>
+
+        <div>
+          <form class="subscribe-form" id="subscribeForm">
+            <input type="text" class="subscribe-input" placeholder="Nom / entreprise" required />
+            <input type="email" class="subscribe-input" placeholder="Votre email" required />
+            <textarea
+              class="subscribe-input"
+              style="resize: vertical; min-height: 70px"
+              placeholder="Parlez-moi de votre projet (type de site, délais, budget...)"
+              required
+            ></textarea>
+            <button type="submit" class="subscribe-btn">Envoyer la demande</button>
+          </form>
+
+          <div class="contact-details">
+            Email : <a href="mailto:stefsouss@gmail.com">stefsouss@gmail.com</a><br />
+            WhatsApp : <a href="https://wa.me/33615314717" target="_blank">06 15 31 47 17</a><br />
+            Basé en France, disponible en freelance.
+          </div>
+        </div>
+      </section>
+
+      <div class="footer">
+        <span>© 2026 Craft GX</span>
+        <span>JavaScript • React • Next.js</span>
+      </div>
+    </div>
+
+    <script>
+      // NAV : scroll vers sections + active
+      const navLinks = document.querySelectorAll(".nav-link");
+
+      navLinks.forEach((link) => {
+        link.addEventListener("click", () => {
+          const targetId = link.dataset.target;
+          const section = document.getElementById(targetId);
+          if (section) {
+            section.scrollIntoView({ behavior: "smooth" });
+            navLinks.forEach((l) => l.classList.remove("active"));
+            link.classList.add("active");
+          }
+        });
+      });
+
+      // Bouton hero -> contact
+      const contactButton = document.getElementById("contactButton");
+      contactButton.addEventListener("click", () => {
+        document.getElementById("contact").scrollIntoView({ behavior: "smooth" });
+        navLinks.forEach((l) => l.classList.remove("active"));
+        document.querySelector('.nav-link[data-target="contact"]').classList.add("active");
+      });
+
+      // Sections : apparition progressive + slide gauche/droite
+      const sections = document.querySelectorAll("section");
+      function handleSections() {
+        const trigger = window.innerHeight * 0.8;
+        sections.forEach((section, index) => {
+          const rect = section.getBoundingClientRect();
+          if (rect.top < trigger) {
+            section.classList.add("visible");
+            // alterner gauche/droite
+            if (!section.dataset.animApplied) {
+              section.dataset.animApplied = "true";
+              section.style.animation =
+                index % 2 === 0 ? "slideInLeft 0.7s ease-out" : "slideInRight 0.7s ease-out";
+            }
+          }
+        });
+      }
+      window.addEventListener("scroll", handleSections);
+      window.addEventListener("load", handleSections);
+
+      // Scroll spy nav
+      function updateActiveNavOnScroll() {
+        let currentId = null;
+        const scrollY = window.scrollY;
+
+        sections.forEach((section) => {
+          const rect = section.getBoundingClientRect();
+          const offsetTop = rect.top + scrollY - 150;
+          if (scrollY >= offsetTop) currentId = section.id;
+        });
+
+        if (currentId) {
+          navLinks.forEach((link) => {
+            if (link.dataset.target === currentId) {
+              link.classList.add("active");
+            } else {
+              link.classList.remove("active");
+            }
+          });
+        }
+      }
+      window.addEventListener("scroll", updateActiveNavOnScroll);
+
+      // Projets : simple alerte
+      document.querySelectorAll(".work-card").forEach((card) => {
+        card.addEventListener("click", () => {
+          const title = card.getAttribute("data-title");
+          alert("Projet : " + title + " (détails à ajouter bientôt)");
+        });
+      });
+
+      // Slider Apps Android (texte)
+      const apps = [
+        {
+          title: "App Android #1",
+          caption:
+            "Application de productivité développée en React Native avec backend Node/Express.",
+        },
+        {
+          title: "App Android #2",
+          caption: "App de suivi personnel, stockage des données via API et MongoDB.",
+        },
+        {
+          title: "App Android #3",
+          caption: "Application éducative avec interface animée et composants réutilisables.",
+        },
+        {
+          title: "App Android #4",
+          caption: "Outil utilitaire (calculs / convertisseur) optimisé pour les petits appareils.",
+        },
+        {
+          title: "App Android #5",
+          caption: "Application expérimentale intégrant un backend Next.js et notifications.",
+        },
+      ];
+
+      let currentApp = 0;
+      const titleEl = document.getElementById("videoTitle");
+      const captionEl = document.getElementById("videoCaption");
+      const durationEl = document.getElementById("videoDuration");
+      const frameEl = document.getElementById("videoFrame");
+
+      function updateApp() {
+        const a = apps[currentApp];
+        titleEl.textContent = a.title;
+        captionEl.textContent = a.caption;
+        durationEl.textContent = "Projet " + (currentApp + 1) + " / " + apps.length;
+
+        // petite anim CSS via JS (rebond)
+        frameEl.style.transform = "scale(1.05)";
+        setTimeout(() => {
+          frameEl.style.transform = "scale(1)";
+        }, 250);
+      }
+
+      document.getElementById("prevVideo").addEventListener("click", () => {
+        currentApp = (currentApp - 1 + apps.length) % apps.length;
+        updateApp();
+      });
+
+      document.getElementById("nextVideo").addEventListener("click", () => {
+        currentApp = (currentApp + 1) % apps.length;
+        updateApp();
+      });
+
+      // Formulaire contact (simulation)
+      document.getElementById("subscribeForm").addEventListener("submit", (e) => {
+        e.preventDefault();
+        alert("Merci pour votre message ! Je vous répondrai à l’adresse indiquée.");
+        e.target.reset();
+      });
+    </script>
+  </body>
+</html>
